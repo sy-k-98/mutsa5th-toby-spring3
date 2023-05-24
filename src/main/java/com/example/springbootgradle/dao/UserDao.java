@@ -6,7 +6,6 @@ import java.sql.*;
 import java.util.Map;
 
 import static java.lang.System.getenv;
-import static java.sql.DriverManager.getConnection;
 
 public class UserDao {
     public void add(User user) throws ClassNotFoundException, SQLException {
