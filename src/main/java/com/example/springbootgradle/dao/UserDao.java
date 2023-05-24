@@ -3,13 +3,12 @@ package com.example.springbootgradle.dao;
 import com.example.springbootgradle.domain.User;
 
 import java.sql.*;
-import java.util.Map;
 
-import static java.lang.System.getenv;
+public class UserDao {
 
-public abstract class UserDao {
+    SimpleConnectionMaker connectionMaker = new SimpleConnectionMaker();
     public void add(User user) throws ClassNotFoundException, SQLException {
-        Connection conn = getConnection();
+        Connection conn = connectionMaker.makeNewConnection();
 
         PreparedStatement pst = conn.prepareStatement("insert into users(id, name, password) values(?, ?, ?)");
         pst.setString(1, user.getId());
@@ -23,7 +22,7 @@ public abstract class UserDao {
     }
 
     public User get(String id) throws ClassNotFoundException, SQLException {
-        Connection conn = getConnection();
+        Connection conn = connectionMaker.makeNewConnection();
 
         PreparedStatement pst = conn.prepareStatement("select id, name, password from users where id = ?");
         pst.setString(1, id);
@@ -42,15 +41,13 @@ public abstract class UserDao {
         return user;
     }
 
-    public abstract Connection getConnection() throws ClassNotFoundException, SQLException;
-
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        UserDao userDao = new NUserDao();
+        UserDao userDao = new UserDao();
         User user = new User();
-        user.setId("2");
-        user.setName("kimss");
-        user.setPassword("12345678");
-        userDao.add(user);
+//        user.setId("2");
+//        user.setName("kimss");
+//        user.setPassword("12345678");
+//        userDao.add(user);
 
         User selectedUser = userDao.get("2");
         System.out.println(selectedUser.getId());
